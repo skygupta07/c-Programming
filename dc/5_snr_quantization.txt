@@ -1,0 +1,21 @@
+% Define signal parameters
+f0 = 100; % Signal frequency in Hz
+fs = 1000; % Sampling frequency in Hz t = 0:1/fs:1-1/fs; % Time vector
+% Generate signal x = sin(2*pi*f0*t);
+% Define quantization parameters
+L = 8; % Number of quantization levels qmax = 1; % Maximum quantization range
+% Perform uniform quantization
+xq = round((x/qmax)*(L-1)) * (qmax/(L-1));
+% Compute SNQR
+signal_power = mean(x.^2); noise_power = mean((x - xq).^2);
+SNQR = 10*log10(signal_power/noise_power);
+% Plot SNQR vs. quantization level quant_levels = 2:2:L;
+snqr_vals = zeros(size(quant_levels)); for i = 1:length(quant_levels)
+L = quant_levels(i);
+xq = round((x/qmax)*(L-1)) * (qmax/(L-1)); noise_power = mean((x - xq).^2);
+snqr_vals(i) = 10*log10(signal_power/noise_power);
+end
+plot(quant_levels, snqr_vals, '-o');
+xlabel('Quantization Levels');
+ylabel('SNQR (dB)');
+title('SNQR vs. Quantization Levels for Uniform Quantization');

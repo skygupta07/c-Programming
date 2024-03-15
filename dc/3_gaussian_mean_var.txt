@@ -1,0 +1,105 @@
+clc;
+clear all;
+close all;
+uniform_data = rand(1, 1000);
+
+mu = 0;
+sigma = 1;
+gaussian_data = mu + sigma * randn(1, 1000);
+
+figure;
+subplot(2, 2, 1);
+histogram(uniform_data, 'Normalization', 'pdf');
+title('Uniform Random Number - PDF');
+xlabel('Value');
+ylabel('Probability');
+
+subplot(2, 2, 2);
+histogram(uniform_data, 'Normalization', 'cdf');
+title('Uniform Random Number - CDF');
+xlabel('Value');
+ylabel('Cumulative Probability');
+
+subplot(2, 2, 3);
+histogram(gaussian_data, 'Normalization', 'pdf');
+title('Gaussian Random Number - PDF');
+xlabel('Value');
+ylabel('Probability');
+
+subplot(2, 2, 4);
+histogram(gaussian_data, 'Normalization', 'cdf');
+title('Gaussian Random Number - CDF');
+xlabel('Value');
+ylabel('Cumulative Probability');
+
+mean_uniform = mean(uniform_data);
+variance_uniform = var(uniform_data);
+
+mean_gaussian = mean(gaussian_data);
+variance_gaussian = var(gaussian_data);
+
+disp('Uniform Random Numbers:');
+disp(['Mean: ' num2str(mean_uniform)]);
+disp(['Variance: ' num2str(variance_uniform)]);
+
+disp('Gaussian Random Numbers:');
+disp(['Mean: ' num2str(mean_gaussian)]);
+disp(['Variance: ' num2str(variance_gaussian)]);
+
+
+
+
+//---------mean and var of uniform distribution---------
+clc;
+close all;
+clear all;
+A=2;
+B=5;
+d=(B-A);
+z=1:0.01:10;
+p=makedist('Uniform',A,B);
+pdf1 = pdf(p,z);
+%p=unifpdf(z,A,B);
+m=mean(p);
+fprintf('Mean of pdf is %f\n',m )
+v=var(p);
+fprintf('Variance of pdf is %f',v )
+figure(1);
+stairs(z,pdf1,'r','LineWidth',2);
+title('PDF OF Uniform Distribution')
+
+
+
+// mean and var of gaussian (normal) distribution
+clc;
+clear all;
+close all;
+N=1000000;
+ variance=0.5; 
+ 
+r=-3:0.1:3;
+meanh=mean(r);
+varh=var(r); 
+ 
+step=0.1;
+range=-3:step:3; 
+h=histc(r,range); 
+figure(1);
+subplot(1,1,1)
+ 
+f=((1./(sqrt(2.*pi.*variance))).*exp((-(range-meanh).^2)./(2.*variance)));
+plot(range,f,'b','linewidth',3)
+title('sublot 1:simulated Gaussian distribution') 
+xlabel('range'); 
+ylabel('PDF'); 
+ 
+figure(2);
+subplot(2,1,2)
+Sigma=sqrt(variance);
+F =(1/2)*(1+erf((range-meanh)/Sigma.*sqrt(2)));
+ 
+plot(range,F,'r','linewidth',1)
+title('Subplot 2: CDF')
+ 
+xlabel('range'); 
+ylabel('CDF');

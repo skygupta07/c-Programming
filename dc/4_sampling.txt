@@ -1,0 +1,31 @@
+% Sampling Theorem and Signal Reconstruction clc;
+clear all;
+close all;
+% Parameters
+originalSamplingRate = 1000; % Original signal sampling rate (Hz) minimumNyquistRate = 2 * originalSamplingRate; % Minimum Nyquist sampling rate maximumSamplingRate = 10 * originalSamplingRate; % Maximum sampling rate
+% Signal parameters
+originalFrequency = 50; % Original signal frequency (Hz)
+timeVectorOriginal = 0:1/originalSamplingRate:1; % Time vector for original signal
+% Generate original signal
+originalSignal = sin(2*pi*originalFrequency*timeVectorOriginal);
+% Plot the original signal
+figure;
+subplot(3, 1, 1); plot(timeVectorOriginal, originalSignal); title('Original Signal');
+xlabel('Time (s)'); ylabel('Amplitude');
+% Sample the signal at different rates
+for currentSamplingRate = [minimumNyquistRate, 5*originalSamplingRate, maximumSamplingRate]
+samplingPeriod = 1/currentSamplingRate; % Sampling period numberOfSamples = round(1/samplingPeriod); % Number of samples
+% Sample the signal
+sampledSignal = originalSignal(1:numberOfSamples:end);
+% Time vector for sampled signal
+timeVectorSampled = 0:samplingPeriod:(length(sampledSignal)-1)*samplingPeriod;
+% Reconstruct the signal using zero-order hold reconstructedSignal = zeros(1, length(timeVectorOriginal)); reconstructedSignal(1:numberOfSamples:end) = sampledSignal;
+% Plot the sampled signal
+subplot(3, 1, find(currentSamplingRate == [minimumNyquistRate, 5*originalSamplingRate, maximumSamplingRate])+1);
+stem(timeVectorSampled, sampledSignal, 'r', 'Marker', 'o'); hold on;
+plot(timeVectorOriginal, reconstructedSignal, 'b--');
+hold off;
+title(['Sampled Signal (Fs = ' num2str(currentSamplingRate) ' Hz)']); xlabel('Time (s)');
+ylabel('Amplitude');
+legend('Sampled Signal', 'Reconstructed Signal');
+end
